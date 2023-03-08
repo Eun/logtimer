@@ -12,6 +12,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	version string
+	commit  string
+	date    string
+)
+
 func main() {
 	var relativeFlag string
 	var formatFlag string
@@ -51,7 +57,7 @@ func main() {
 			_, _ = io.Copy(os.Stdout, reader)
 		},
 	}
-	rootCmd.Version = "1.0.2"
+	rootCmd.Version = version + " " + date + " " + commit
 	rootCmd.Flags().StringVarP(&formatFlag, "format", "f", "[%X] ", `format to prefix the lines. You can use following directives to format the date:
 	%a    Weekday as locale’s abbreviated name.                             (Sun, Mon, ..., Sat)
 	%A    Weekday as locale’s full name.                                    (Sunday, Monday, ..., Saturday)
