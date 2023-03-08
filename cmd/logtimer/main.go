@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,7 +19,6 @@ func main() {
 	var rootCmd = &cobra.Command{
 		Use: filepath.Base(os.Args[0]),
 		Run: func(cmd *cobra.Command, args []string) {
-
 			var cc logtimer.ColorCorrection
 			switch strings.ToLower(colorCorrection) {
 			case "true", "normal", "standard", "enable":
@@ -34,7 +34,7 @@ func main() {
 			if relativeFlag != "" {
 				startTime := time.Now()
 				format = func() string {
-					return logtimer.FormatDuration(time.Now().Sub(startTime), relativeFlag)
+					return logtimer.FormatDuration(time.Since(startTime), relativeFlag)
 				}
 			} else {
 				format = func() string {
@@ -104,5 +104,7 @@ func main() {
 
 	rootCmd.Flags().StringVarP(&colorCorrection, "color-correction", "", "enable", "change color correction if you experience problems (possible values: enable, alternate, disable")
 
-	rootCmd.Execute()
+	if err := rootCmd.Execute(); err != nil {
+		log.Fatal(err)
+	}
 }

@@ -18,7 +18,7 @@ func TestPrefixReader(t *testing.T) {
 			Reader: &in,
 			Format: func() string {
 				defer func() {
-					index = index + 1
+					index++
 				}()
 				return fmt.Sprintf("%d ", index)
 			},
@@ -61,7 +61,7 @@ func TestPrefixReader(t *testing.T) {
 			Reader: &in,
 			Format: func() string {
 				defer func() {
-					index = index + 1
+					index++
 				}()
 				return fmt.Sprintf("%d ", index)
 			},
@@ -89,7 +89,7 @@ func TestPrefixReader(t *testing.T) {
 
 		<-copyChan
 
-		require.Equal(t, fmt.Sprintf("0 Hello World\n1 Hello Universe\n"), out.String())
+		require.Equal(t, "0 Hello World\n1 Hello Universe\n", out.String())
 	})
 }
 

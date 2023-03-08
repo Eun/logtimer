@@ -1,4 +1,11 @@
-# mapprint [![Travis](https://img.shields.io/travis/Eun/mapprint.svg)](https://travis-ci.org/Eun/mapprint) [![Codecov](https://img.shields.io/codecov/c/github/Eun/mapprint.svg)](https://codecov.io/gh/Eun/mapprint) [![GoDoc](https://godoc.org/github.com/Eun/mapprint?status.svg)](https://godoc.org/github.com/Eun/mapprint) [![go-report](https://goreportcard.com/badge/github.com/Eun/mapprint)](https://goreportcard.com/report/github.com/Eun/mapprint)
+# mapprint
+[![Actions Status](https://github.com/Eun/mapprint/workflows/CI/badge.svg)](https://github.com/Eun/mapprint/actions)
+[![Coverage Status](https://coveralls.io/repos/github/Eun/mapprint/badge.svg?branch=master)](https://coveralls.io/github/Eun/mapprint?branch=master)
+[![PkgGoDev](https://img.shields.io/badge/pkg.go.dev-reference-blue)](https://pkg.go.dev/github.com/Eun/mapprint)
+[![GoDoc](https://godoc.org/github.com/Eun/mapprint?status.svg)](https://godoc.org/github.com/Eun/mapprint)
+[![go-report](https://goreportcard.com/badge/github.com/Eun/mapprint)](https://goreportcard.com/report/github.com/Eun/mapprint)
+[![go1.15](https://img.shields.io/badge/go-1.15-blue)](#)
+---
 Printf for maps and structs
 
 ```bash
@@ -7,7 +14,7 @@ go get github.com/Eun/mapprint
 
 ```go
 // prints `[14:01:08.005674] Database initialized'
-mapprint.Printf("[%0H:%02m:%02s.%06ms] Database initialized", map[string]string{
+mapprint.Printf("[%0H:%02m:%02s.%06ms] Database initialized", map[string]interface{}{
     "H": 14,
     "m": 1,
     "s": 8,

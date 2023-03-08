@@ -68,7 +68,7 @@ func weekNumber(t time.Time, char int) int {
 		if weekday == 0 {
 			weekday = 6
 		} else {
-			weekday -= 1
+			weekday--
 		}
 	}
 
@@ -95,9 +95,13 @@ func weekNumber(t time.Time, char int) int {
 // %Z    Time zone name                                                    (UTC)
 // %j    Day of the year as a decimal number                               (1, 2, ..., 366)
 // %U    Week number of the year (Sunday as the first day of the week) as a decimal number. All days in a new year preceding the first Sunday are considered to be in week 0.
-//                                                                         (0, 1, ..., 53)
+//
+//	(0, 1, ..., 53)
+//
 // %W    Week number of the year (Monday as the first day of the week) as a decimal number. All days in a new year preceding the first Monday are considered to be in week 0.
-//                                                                         (0, 1, ..., 53)
+//
+//	(0, 1, ..., 53)
+//
 // %c    Date and time representation.                                     (Tue Aug 16 21:30:00 1988)
 // %x    Date representation.                                              (08/16/88)
 // %X    Time representation.                                              (21:30:00)
@@ -152,8 +156,10 @@ func FormatDuration(d time.Duration, f string) string {
 	return mapprint.Sprintf(f, map[string]interface{}{
 		"X": func() string {
 			s := d.Seconds()
-			hours := int(math.Floor(float64(s / 3600)))
+			hours := int(math.Floor(s / 3600))
+			//nolint: staticcheck // calling math.Floor on a converted integer is pointless (staticcheck)
 			minutes := int(math.Floor(float64(int(s) % 3600 / 60)))
+			//nolint: staticcheck // calling math.Floor on a converted integer is pointless (staticcheck)
 			seconds := int(math.Floor(float64(int(s) % 3600 % 60)))
 			return fmt.Sprintf("%02d:%02d:%02d", hours, minutes, seconds)
 		},
