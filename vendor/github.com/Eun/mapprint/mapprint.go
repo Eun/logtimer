@@ -1,3 +1,4 @@
+// Package mapprint provides functionality to print a map/struct in a formated way.
 package mapprint
 
 import (
@@ -21,16 +22,15 @@ var defaultPrinter = Printer{
 
 // Printer is a object that can be used to initialize the printer with custom settings
 // A typical example could be:
-// p := Printer{
-//    KeyToken:    '$',
-//    KeyNotFound: DefaultValue("Unknown"),
-//    DefaultBindings: map[string]interface{}{
-//        "Key1": "Value1"
-//    },
-// }
-// p.Sprintf("Key1 is $Key1")
-// p.Sprintf("Key2 is $Key2")
-//
+//     p := Printer{
+//         KeyToken:    '$',
+//         KeyNotFound: DefaultValue("Unknown"),
+//         DefaultBindings: map[string]interface{}{
+//             "Key1": "Value1"
+//         },
+//     }
+//     p.Sprintf("Key1 is $Key1")
+//     p.Sprintf("Key2 is $Key2")
 type Printer struct {
 	// KeyToken specifies how keys start
 	// the Default value is % (percent sign)
@@ -43,15 +43,15 @@ type Printer struct {
 	SuppressErrors bool
 }
 
-// KeyNotFoundFunc describes the custom function that will be called if a Key was not found
+// KeyNotFoundFunc describes the custom function that will be called if a Key was not found.
 type KeyNotFoundFunc func(w io.Writer, printer *Printer, prefix, key []rune, defaultPrinter PrintValueFunc) (int, error)
 
-// PrintValueFunc describes the custom function that will be called to print a reflect.Value
+// PrintValueFunc describes the custom function that will be called to print a reflect.Value.
 type PrintValueFunc func(w io.Writer, printer *Printer, prefix, key []rune, value reflect.Value) (int, error)
 
 // Some default functions for KeyNotFound
 
-// KeepKey returns the requested key
+// KeepKey returns the requested key.
 func KeepKey() KeyNotFoundFunc {
 	return func(w io.Writer, printer *Printer, prefix, key []rune, _ PrintValueFunc) (int, error) {
 		n, err := writeRune(w, printer.actualKeyToken)
@@ -79,21 +79,21 @@ func KeepKey() KeyNotFoundFunc {
 	}
 }
 
-// DefaultValue returns a default value
+// DefaultValue returns a default value.
 func DefaultValue(defaultValue interface{}) KeyNotFoundFunc {
 	return func(w io.Writer, printer *Printer, prefix, key []rune, defaultPrinter PrintValueFunc) (int, error) {
 		return defaultPrinter(w, printer, prefix, key, reflect.ValueOf(defaultValue))
 	}
 }
 
-// ClearKey returns an empty string
+// ClearKey returns an empty string.
 func ClearKey() KeyNotFoundFunc {
 	return func(io.Writer, *Printer, []rune, []rune, PrintValueFunc) (int, error) {
 		return 0, nil
 	}
 }
 
-// GetKeyToken returns the rune that is actually used for the key identification
+// GetKeyToken returns the rune that is actually used for the key identification.
 func (printer *Printer) GetKeyToken() rune {
 	if printer.KeyToken == 0 {
 		return defaultToken
@@ -104,9 +104,9 @@ func (printer *Printer) GetKeyToken() rune {
 // Fprintf formats a map/struct according to a format specifier and writes to w.
 // It returns the number of bytes written and any write error encountered.
 // example:
-// Fprintf(w, "%Key1", map[string]interface{}{
-//    "Key1": "Value1",
-// })
+//     Fprintf(w, "%Key1", map[string]interface{}{
+//         "Key1": "Value1",
+//     })
 func (printer *Printer) Fprintf(w io.Writer, format string, bindings ...interface{}) (int, error) {
 	// set key token
 	// unfortunately it is not possible to use \0 as a token
@@ -155,9 +155,9 @@ func (printer *Printer) Fprintf(w io.Writer, format string, bindings ...interfac
 // Fprintf formats a map/struct according to a format specifier and writes to w.
 // It returns the number of bytes written and any write error encountered.
 // example:
-// Fprintf(w, "%Key1", map[string]interface{}{
-//    "Key1": "Value1",
-// })
+//     Fprintf(w, "%Key1", map[string]interface{}{
+//         "Key1": "Value1",
+//     })
 func Fprintf(w io.Writer, format string, bindings ...interface{}) (int, error) {
 	return defaultPrinter.Fprintf(w, format, bindings...)
 }
@@ -307,7 +307,7 @@ func makeBindings(v reflect.Value) (bindings, error) {
 	}
 }
 
-func (printer *Printer) placeValue(w io.Writer, f []rune, size int, index int, bindings bindings) (int, int, error) {
+func (printer *Printer) placeValue(w io.Writer, f []rune, size, index int, bindings bindings) (int, int, error) {
 	index++
 	lastRune := utf8.RuneError
 	keyPos := -1
@@ -345,7 +345,6 @@ func (printer *Printer) placeValue(w io.Writer, f []rune, size int, index int, b
 		}
 	}
 
-	// fmt.Printf("PREFIX: `%s', KEY: `%s'\n", string(prefix), string(f[keyPos:keyEnd]))
 	if keyPos == keyEnd {
 		n, err := writeRune(w, printer.actualKeyToken)
 		if f[keyEnd] == printer.actualKeyToken { // print %% to %

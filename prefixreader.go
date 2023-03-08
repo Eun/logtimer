@@ -26,7 +26,7 @@ type PrefixReader struct {
 	io.Reader
 }
 
-func (lt *PrefixReader) writeFormat(w io.Writer) (int, error) {
+func (lt *PrefixReader) writeFormat(w io.Writer) (int, error) { //nolint: unparam // allow unused int return
 	if lt.ColorCorrection == Disabled {
 		return io.WriteString(w, lt.Format())
 	}
@@ -55,7 +55,8 @@ func (lt *PrefixReader) writeFormat(w io.Writer) (int, error) {
 	if err != nil {
 		return written, err
 	}
-	n, err = fmt.Fprintf(w, "%s\x1b[%dC", restoreCursor, len(string(r)))
+	n, err = fmt.Fprintf(w, "%s\x1b[%dC", restoreCursor, len(r))
+	written += n
 	return written, err
 }
 
@@ -69,15 +70,15 @@ func (lt *PrefixReader) Read(p []byte) (int, error) {
 	}
 
 	if !lt.skipNextPrint {
-		lt.writeFormat(&lt.buffer)
+		_, _ = lt.writeFormat(&lt.buffer)
 		lt.skipNextPrint = true
 	}
 
 	for i := 0; i < n; i++ {
-		lt.buffer.WriteByte(p[i])
+		_ = lt.buffer.WriteByte(p[i])
 		if p[i] == '\n' {
 			if i < n-1 {
-				lt.writeFormat(&lt.buffer)
+				_, _ = lt.writeFormat(&lt.buffer)
 			} else {
 				lt.skipNextPrint = false
 			}

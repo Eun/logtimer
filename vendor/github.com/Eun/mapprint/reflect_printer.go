@@ -10,7 +10,7 @@ import (
 	"unicode"
 )
 
-func defaultValuePrinterFunc(w io.Writer, printer *Printer, prefix []rune, key []rune, value reflect.Value) (int, error) {
+func defaultValuePrinterFunc(w io.Writer, printer *Printer, prefix, key []rune, value reflect.Value) (int, error) {
 	// Prefix for all types:
 	// +AB10
 	//    ^^ Total value length is 10
@@ -28,7 +28,7 @@ func defaultValuePrinterFunc(w io.Writer, printer *Printer, prefix []rune, key [
 	// +AB10.2
 	//      ^^ take item at index 2
 
-	if len(prefix) <= 0 {
+	if len(prefix) == 0 {
 		return defaultReflectPrinter.Fprint(w, value)
 	}
 
