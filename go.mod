@@ -6,7 +6,7 @@ require (
 	github.com/Eun/mapprint v1.1.1
 	github.com/pborman/ansi v1.0.0
 	github.com/spf13/cobra v1.7.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 )
 
 require (
