@@ -1,6 +1,6 @@
 module github.com/Eun/logtimer
 
-go 1.20
+go 1.21.3
 
 require (
 	github.com/Eun/mapprint v1.1.1
